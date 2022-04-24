@@ -25,7 +25,8 @@ namespace FieldAgent.Core.Entities
         public Agency Agency { get; set; }
 
         //Many-to-many Agents
-        public List<Agent> Agents { get; set; }
+        public List<MissionAgent> MissionAgents { get; set; }
+        //public List<Agent> Agents { get; set; }
 
         public override bool Equals(object obj)
         {

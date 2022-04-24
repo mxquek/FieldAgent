@@ -58,15 +58,21 @@ namespace FieldAgent.DAL.Repositories
             {
                 using (var db = DbFac.GetDbContext())
                 {
-/*                    Agent targetAgent = db.Agents
-                                          .Include(a => a.Missions)
-                                          .Single(a => a.AgentId == agentId);*/
-                    result.Data = db.Missions.Where(m=> m.Agents.Any(a => a.AgentId == agentId)).ToList();
-                    //result.Data = targetAgent.Missions;
+                    result.Data = db.MissionAgents
+                                        .Include(ma => ma.Mission)
+                                        .Where(ma => ma.AgentId == agentId)
+                                        .Select(ma => ma.Mission)
+                                        .ToList();
+
+                    /*Agent targetAgent = db.Agents
+                                          .Include(a => a.MissionAgents)
+                                          .Single(a => a.AgentId == agentId);
+                    result.Data = db.Missions.Where(m => m.Agents.Any(a => a.AgentId == agentId)).ToList();
+                    */
                     result.Success = true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.Success = false;
                 result.Message = ex.Message;

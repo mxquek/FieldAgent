@@ -31,7 +31,7 @@ namespace FieldAgent.DAL.Repositories
         public Response Delete(int missionId)
         {
             Response result = new Response();
-            try
+/*            try
             {
                 using (var db = DbFac.GetDbContext())
                 {
@@ -49,7 +49,7 @@ namespace FieldAgent.DAL.Repositories
             {
                 result.Success = false;
                 result.Message = ex.Message;
-            }
+            }*/
             return result;
         }
 

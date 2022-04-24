@@ -21,7 +21,8 @@ namespace FieldAgent.Core.Entities
 
         //One-to-many
         public List<AgencyAgent> AgencyAgents { get; set; }
-        public List<Mission> Missions { get; set; }
+        public List<MissionAgent> MissionAgents { get; set; }
+        //public List<Mission> Missions { get; set; }
         public List<Alias> Aliases { get; set; }
 
 
@@ -39,13 +40,5 @@ namespace FieldAgent.Core.Entities
         {
             return HashCode.Combine(AgentId, FirstName, LastName, DateOfBirth, Height);
         }
-        /*public Agent(int agentId, string firstName, string lastName, DateTime DOB, decimal height)
-        {
-            AgentId = agentId;
-            FirstName = firstName;
-            LastName = lastName;
-            DateOfBirth = DOB;
-            Height = height;
-        }*/
     }
 }

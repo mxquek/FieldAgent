@@ -40,13 +40,17 @@ namespace FieldAgent.DAL.Tests
             Assert.AreEqual(result.Data, expectedAgent);
         }
 
-        /*[Test]
+        [Test]
         public void GetMissions_GivenAgentId_ReturnMissions()
         {
+            List<Mission> expected = new List<Mission>();
+            expected.Add(MissionRepositoryTests.expectedMission);
+
+            
             Response<List<Mission>> result = db.GetMissions(1);
             Assert.True(result.Success);
-            //Assert.AreEqual(result.Data, expectedAgent.Missions);
-        }*/
+            Assert.AreEqual(result.Data, expected);
+        }
 
         /*[Test]
         public void Delete_GivenAgentId_DeleteAgent()

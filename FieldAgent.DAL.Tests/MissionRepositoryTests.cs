@@ -16,7 +16,7 @@ namespace FieldAgent.DAL.Tests
         MissionRepository db;
         DbFactory dbf;
 
-        Mission expectedMission = new Mission
+        public static Mission expectedMission = new Mission
         {
             MissionId = 1,
             CodeName = "Jordanna",
