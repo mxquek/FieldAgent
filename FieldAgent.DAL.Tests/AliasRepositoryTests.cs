@@ -72,7 +72,7 @@ namespace FieldAgent.DAL.Tests
             Response result = db.Update(updatedAlias);
             Assert.True(result.Success);
 
-            var actual = db.Get(1).Data;
+            Alias actual = db.Get(1).Data;
             Assert.AreEqual(updatedAlias,actual);
         }
         [Test]
@@ -85,7 +85,7 @@ namespace FieldAgent.DAL.Tests
         }
 
         [Test]
-        public void GetByAgent_GivenAgentId_DeleteAliases()
+        public void GetByAgent_GivenAgentId_ReturnAliases()
         {
             List<Alias> expected = new List<Alias>();
             expected.Add(expectedAlias);

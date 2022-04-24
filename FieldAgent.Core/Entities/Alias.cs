@@ -33,7 +33,7 @@ namespace FieldAgent.Core.Entities
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(AgentId, AliasName, InterpolId, Persona);
+            return HashCode.Combine(AliasId, AliasName, InterpolId, Persona, AgentId);
         }
     }
 }

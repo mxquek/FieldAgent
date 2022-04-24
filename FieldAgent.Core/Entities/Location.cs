@@ -23,5 +23,22 @@ namespace FieldAgent.Core.Entities
         //Many-to-one Agency
         public int AgencyId { get; set; }
         public Agency Agency { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Location location &&
+                LocationId == location.LocationId &&
+                LocationName == location.LocationName &&
+                Street1 == location.Street1 &&
+                Street2 == location.Street2 &&
+                City == location.City &&
+                PostalCode == location.PostalCode &&
+                CountryCode == location.CountryCode &&
+                AgencyId == location.AgencyId;
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(LocationId, LocationName, Street1, Street2, City, PostalCode, CountryCode, AgencyId);
+        }
     }
 }
