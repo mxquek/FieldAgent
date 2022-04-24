@@ -38,8 +38,6 @@ namespace FieldAgent.DAL.Repositories
             using (var db = DbFac.GetDbContext())
             {
                 result.Data = db.SecurityClearances.ToList();
-                                //.Select(sc=>sc)
-                                //.ToList();
                 result.Success = true;
             }
             if (result.Data == null)

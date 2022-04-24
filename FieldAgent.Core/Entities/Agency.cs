@@ -20,5 +20,17 @@ namespace FieldAgent.Core.Entities
         public List<AgencyAgent> AgencyAgents { get; set; }
         public List<Location> Locations { get; set; }
         public List<Mission> Missions { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Agency agency &&
+                agency.AgencyId == AgencyId &&
+                agency.ShortName == ShortName &&
+                agency.LongName == LongName;
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(AgencyId, ShortName, LongName);
+        }
     }
 }
