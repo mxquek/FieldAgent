@@ -13,14 +13,14 @@ namespace FieldAgent.DAL.Repositories
     {
         public DbFactory DbFac { get; set; }
         public LocationRepository LocationRepository { get; set; }
-        //public MissionRepository MissionRepository { get; set; }
+        public MissionRepository MissionRepository { get; set; }
        
 
-        public AgencyRepository(DbFactory dbfac, LocationRepository locationRepo)
+        public AgencyRepository(DbFactory dbfac, LocationRepository locationRepo, MissionRepository missionRepo)
         {
             DbFac = dbfac;
             LocationRepository = locationRepo;
-            //MissionRepository = missionRepo;
+            MissionRepository = missionRepo;
         }
 
 
@@ -37,7 +37,11 @@ namespace FieldAgent.DAL.Repositories
                         db.Locations.Remove(location);
                     }
 
-                    //Need to also remove from missions
+                    Response<List<Mission>> missions = MissionRepository.GetByAgency(agencyId);
+                    foreach (Mission mission in missions.Data)
+                    {
+                        db.Missions.Remove(mission);
+                    }
 
                     db.Agencies.Remove(db.Agencies.Find(agencyId));
                     result.Success = true;
