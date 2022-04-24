@@ -17,5 +17,17 @@ namespace FieldAgent.Core.Entities
 
         //One-to-Many AgencyAgents
         public List<AgencyAgent> AgencyAgents { get; set; }
+
+
+        public override bool Equals(object obj)
+        {
+            return obj is SecurityClearance sc &&
+                SecurityClearanceId == sc.SecurityClearanceId &&
+                SecurityClearanceName == sc.SecurityClearanceName;
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(SecurityClearanceId, SecurityClearanceName);
+        }
     }
 }
