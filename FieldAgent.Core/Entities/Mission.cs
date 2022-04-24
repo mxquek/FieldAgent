@@ -26,5 +26,23 @@ namespace FieldAgent.Core.Entities
 
         //Many-to-many Agents
         public List<Agent> Agents { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Mission mission &&
+                MissionId == mission.MissionId &&
+                CodeName == mission.CodeName &&
+                StartDate == mission.StartDate &&
+                ProjectedEndDate == mission.ProjectedEndDate &&
+                ActualEndDate == mission.ActualEndDate &&
+                OperationalCost == mission.OperationalCost &&
+                Notes == mission.Notes &&
+                AgencyId == mission.AgencyId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(MissionId, CodeName, StartDate, ProjectedEndDate, ActualEndDate, OperationalCost,Notes,AgencyId);
+        }
     }
 }

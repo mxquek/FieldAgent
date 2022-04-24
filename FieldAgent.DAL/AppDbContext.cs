@@ -14,10 +14,11 @@ namespace FieldAgent.DAL
     {
         public DbSet<Agency> Agencies { get; set; }
         public DbSet<AgencyAgent> AgencyAgents { get; set; }
+        public DbSet<Mission> Missions { get; set; }
         public DbSet<Agent> Agents { get; set; }
         public DbSet<Alias> Aliases { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Mission> Missions { get; set; }
+
         public DbSet<SecurityClearance> SecurityClearances { get; set; }
 
 
@@ -40,6 +41,15 @@ namespace FieldAgent.DAL
         {
             builder.Entity<AgencyAgent>()
                 .HasKey(aa => new {aa.AgencyId, aa.AgentId});
+            //builder.Entity<Mission>()
+            //    .HasMany<Agent>(m => m.Agents)
+            //    .WithMany(a => a.Missions)
+            //    .Map(ma =>
+            //    {
+            //        ma.MapLeftKey("MissionId");
+            //        ma.MapRightKay("AgentId");
+            //        ma.ToTable("MissionAgent");
+            //    });
         }
     }
 }

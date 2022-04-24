@@ -1,6 +1,7 @@
 ﻿using FieldAgent.Core;
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,27 @@ namespace FieldAgent.DAL.Repositories
 
         public Response Delete(int missionId)
         {
-            throw new NotImplementedException();
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    var missions = db.Missions.Include(m => m.Agents).Where(m => m.MissionId == missionId);
+                    foreach(Mission mission in missions)
+                    {
+                        db.Missions.Remove(mission);
+                    }
+                    
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
         }
 
         public Response<Mission> Get(int missionId)
@@ -39,7 +60,29 @@ namespace FieldAgent.DAL.Repositories
 
         public Response<List<Mission>> GetByAgency(int agencyId)
         {
-            throw new NotImplementedException();
+            Response<List<Mission>> result = new Response<List<Mission>>();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.Missions
+                                    .Where(m => m.AgencyId == agencyId).ToList();
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            if (result.Data == null)
+            {
+                result.Success = false;
+                result.Message = $"Missions for Agency #{agencyId} not found";
+            }
+
+            return result;
         }
 
         public Response<List<Mission>> GetByAgent(int agentId)
