@@ -20,5 +20,20 @@ namespace FieldAgent.Core.Entities
         //Many-to-one
         public int AgentId { get; set; }
         public Agent Agent { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Alias alias &&
+                AliasId == alias.AliasId &&
+                AliasName == alias.AliasName &&
+                InterpolId == alias.InterpolId &&
+                Persona == alias.Persona &&
+                AgentId == alias.AgentId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(AgentId, AliasName, InterpolId, Persona);
+        }
     }
 }

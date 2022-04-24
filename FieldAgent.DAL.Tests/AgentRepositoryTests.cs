@@ -4,6 +4,7 @@ using FieldAgent.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace FieldAgent.DAL.Tests
 {
@@ -12,7 +13,7 @@ namespace FieldAgent.DAL.Tests
 
         AgentRepository db;
         DbFactory dbf;
-        Agent expected = new Agent
+        Agent expectedAgent = new Agent
         {
             AgentId = 1,
             FirstName = "Faydra",
@@ -32,11 +33,26 @@ namespace FieldAgent.DAL.Tests
         }
 
         [Test]
-        public void Get_GivenExisitingAgentId_ReturnAgent()
+        public void Get_GivenAgentId_ReturnAgent()
         {
             Response <Agent> result = db.Get(1);
             Assert.True(result.Success);
-            Assert.AreEqual(result.Data, expected);
+            Assert.AreEqual(result.Data, expectedAgent);
         }
+
+        /*[Test]
+        public void GetMissions_GivenAgentId_ReturnMissions()
+        {
+            Response<List<Mission>> result = db.GetMissions(1);
+            Assert.True(result.Success);
+            //Assert.AreEqual(result.Data, expectedAgent.Missions);
+        }*/
+
+        /*[Test]
+        public void Delete_GivenAgentId_DeleteAgent()
+        {
+            Response<Agent> result = db.Delete(1);
+            Assert.True(result.Success);
+        }*/
     }
 }
