@@ -52,11 +52,12 @@ namespace FieldAgent.DAL.Tests
             Assert.AreEqual(result.Data, expected);
         }
 
-        /*[Test]
+        [Test]
         public void Delete_GivenAgentId_DeleteAgent()
         {
-            Response<Agent> result = db.Delete(1);
+            Response result = db.Delete(1);
             Assert.True(result.Success);
-        }*/
+            Assert.False(db.Get(1).Success);
+        }
     }
 }

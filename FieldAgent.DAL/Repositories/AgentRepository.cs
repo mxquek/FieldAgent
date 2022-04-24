@@ -20,20 +20,35 @@ namespace FieldAgent.DAL.Repositories
         }
         public Response Delete(int agentId)
         {
-            throw new NotImplementedException();
-            /*Response result = new Response<Agent>();
+            Response result = new Response<Agent>();
             using (var db = DbFac.GetDbContext())
             {
-                var alias = db.Aliases
+                var aliases = db.Aliases
                     .Where(a => a.AgentId == agentId);
-                foreach(var item in alias)
+                foreach (var alias in aliases)
                 {
-                    db.Aliases.Remove(item);
+                    db.Aliases.Remove(alias);
                 }
 
-                //var agencyAgent = new
-                
-            }*/
+                var agencyAgents = db.AgencyAgents
+                                    .Where(aa => aa.AgentId == agentId);
+                foreach(var agencyAgent in agencyAgents)
+                {
+                    db.AgencyAgents.Remove(agencyAgent);
+                }
+
+                var missionAgents = db.MissionAgents
+                                        .Where(ma => ma.AgentId == agentId);
+                foreach (var missionAgent in missionAgents)
+                {
+                    db.MissionAgents.Remove(missionAgent);
+                }
+                db.Agents.Remove(db.Agents.Find(agentId));
+                db.SaveChanges();
+
+                result.Success = true;
+            }
+            return result;
         }
         public Response<Agent> Get(int agentId)
         {
