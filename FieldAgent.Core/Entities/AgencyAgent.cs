@@ -27,5 +27,24 @@ namespace FieldAgent.Core.Entities
 
         public int SecurityClearanceId { get; set; }
         public SecurityClearance SecurityClearance { get; set; }
+
+
+        public override bool Equals(object obj)
+        {
+            return obj is AgencyAgent agencyAgent &&
+                agencyAgent.AgencyId == AgencyId &&
+                agencyAgent.AgentId == AgentId &&
+                agencyAgent.BadgeId == BadgeId &&
+                agencyAgent.ActivationDate == ActivationDate &&
+                agencyAgent.DeactivationDate == DeactivationDate &&
+                agencyAgent.IsActive == IsActive &&
+
+                agencyAgent.SecurityClearanceId == SecurityClearanceId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(AgencyId, AgentId, BadgeId, ActivationDate, DeactivationDate,IsActive, SecurityClearanceId);
+        }
     }
 }

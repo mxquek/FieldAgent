@@ -68,7 +68,7 @@ namespace FieldAgent.DAL.Repositories
             {
                 using (var db = DbFac.GetDbContext())
                 {   
-                    db.Remove(db.Aliases.Find(aliasId));
+                    db.Aliases.Remove(db.Aliases.Find(aliasId));
                     result.Success = true;
                     db.SaveChanges();
                 }

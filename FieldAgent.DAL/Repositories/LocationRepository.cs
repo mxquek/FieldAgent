@@ -23,7 +23,7 @@ namespace FieldAgent.DAL.Repositories
             {
                 using (var db = DbFac.GetDbContext())
                 {
-                    db.Remove(db.Locations.Find(locationId));
+                    db.Locations.Remove(db.Locations.Find(locationId));
                     result.Success = true;
                     db.SaveChanges();
                 }
