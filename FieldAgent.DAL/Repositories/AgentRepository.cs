@@ -21,32 +21,40 @@ namespace FieldAgent.DAL.Repositories
         public Response Delete(int agentId)
         {
             Response result = new Response<Agent>();
-            using (var db = DbFac.GetDbContext())
+            try
             {
-                var aliases = db.Aliases
-                    .Where(a => a.AgentId == agentId);
-                foreach (var alias in aliases)
+                using (var db = DbFac.GetDbContext())
                 {
-                    db.Aliases.Remove(alias);
-                }
+                    var aliases = db.Aliases
+                        .Where(a => a.AgentId == agentId);
+                    foreach (var alias in aliases)
+                    {
+                        db.Aliases.Remove(alias);
+                    }
 
-                var agencyAgents = db.AgencyAgents
-                                    .Where(aa => aa.AgentId == agentId);
-                foreach(var agencyAgent in agencyAgents)
-                {
-                    db.AgencyAgents.Remove(agencyAgent);
-                }
+                    var agencyAgents = db.AgencyAgents
+                                        .Where(aa => aa.AgentId == agentId);
+                    foreach (var agencyAgent in agencyAgents)
+                    {
+                        db.AgencyAgents.Remove(agencyAgent);
+                    }
 
-                var missionAgents = db.MissionAgents
-                                        .Where(ma => ma.AgentId == agentId);
-                foreach (var missionAgent in missionAgents)
-                {
-                    db.MissionAgents.Remove(missionAgent);
-                }
-                db.Agents.Remove(db.Agents.Find(agentId));
-                db.SaveChanges();
+                    var missionAgents = db.MissionAgents
+                                            .Where(ma => ma.AgentId == agentId);
+                    foreach (var missionAgent in missionAgents)
+                    {
+                        db.MissionAgents.Remove(missionAgent);
+                    }
+                    db.Agents.Remove(db.Agents.Find(agentId));
+                    db.SaveChanges();
 
-                result.Success = true;
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }
@@ -104,12 +112,45 @@ namespace FieldAgent.DAL.Repositories
 
         public Response<Agent> Insert(Agent agent)
         {
-            throw new NotImplementedException();
+            Response<Agent> result = new Response<Agent>();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.Agents.Add(agent);
+                    result.Data = agent;
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
 
         public Response Update(Agent agent)
         {
-            throw new NotImplementedException();
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.Agents.Update(agent);
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
         }
     }
 }

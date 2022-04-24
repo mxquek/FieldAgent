@@ -36,11 +36,11 @@ namespace FieldAgent.DAL.Repositories
                 using (var db = DbFac.GetDbContext())
                 {
                     var missions = db.Missions.Include(m => m.Agents).Where(m => m.MissionId == missionId);
-                    foreach(Mission mission in missions)
+                    foreach (Mission mission in missions)
                     {
                         db.Missions.Remove(mission);
                     }
-                    
+
                     result.Success = true;
                     db.SaveChanges();
                 }
