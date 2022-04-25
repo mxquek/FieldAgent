@@ -13,6 +13,7 @@ namespace FieldAgent.DAL.Tests
 
         AgentRepository db;
         DbFactory dbf;
+
         Agent expectedAgent = new Agent
         {
             AgentId = 1,
@@ -29,7 +30,6 @@ namespace FieldAgent.DAL.Tests
             DateOfBirth = new DateTime(1999, 3, 14),
             Height = 70.24M
         };
-
         Agent expectedNewAgent = new Agent
         {
             FirstName = "New",

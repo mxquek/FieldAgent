@@ -5,9 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Tests
 {
@@ -15,6 +12,7 @@ namespace FieldAgent.DAL.Tests
     {
         AliasRepository db;
         DbFactory dbf;
+
         Alias expectedAlias = new Alias
         {
             AliasId = 1,
@@ -23,7 +21,6 @@ namespace FieldAgent.DAL.Tests
             Persona = "Serviceberry",
             AgentId = 1
         };
-
         Alias updatedAlias = new Alias
         {
             AliasId = 1,
@@ -32,7 +29,6 @@ namespace FieldAgent.DAL.Tests
             Persona = "UpdatedServiceberry",
             AgentId = 1
         };
-
         Alias newAlias = new Alias
         {
             AliasName = "newAliasName",

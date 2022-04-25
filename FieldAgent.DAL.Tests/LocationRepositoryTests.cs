@@ -3,11 +3,7 @@ using FieldAgent.Core.Entities;
 using FieldAgent.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Tests
 {
@@ -28,7 +24,6 @@ namespace FieldAgent.DAL.Tests
 
             AgencyId = 1
         };
-
         Location expectedUpdatedLocation = new Location
         {
             LocationId = 1,
@@ -41,7 +36,6 @@ namespace FieldAgent.DAL.Tests
 
             AgencyId = 2
         };
-
         Location expectedNewLocation = new Location
         {
             LocationName = "New Lydall, Inc.",

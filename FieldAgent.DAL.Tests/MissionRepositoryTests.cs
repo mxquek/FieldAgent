@@ -5,9 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Tests
 {
@@ -28,7 +25,6 @@ namespace FieldAgent.DAL.Tests
 
             AgencyId = 1
         };
-
         public static Mission expectedUpdatedMission = new Mission
         {
             MissionId = 1,
@@ -41,7 +37,6 @@ namespace FieldAgent.DAL.Tests
 
             AgencyId = 3
         };
-
         public static Mission expectedNewMission = new Mission
         {
             CodeName = "NewMission",

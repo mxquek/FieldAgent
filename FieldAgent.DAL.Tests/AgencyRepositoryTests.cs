@@ -1,11 +1,5 @@
 ﻿using NUnit.Framework;
-using Microsoft.Extensions.Configuration;
-using FieldAgent.DAL;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FieldAgent.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using FieldAgent.Core.Entities;
