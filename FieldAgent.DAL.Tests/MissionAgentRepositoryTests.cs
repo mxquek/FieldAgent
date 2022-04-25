@@ -72,7 +72,7 @@ namespace FieldAgent.DAL.Tests
             expected.Add(expectedUpdatedMissionAgent);
 
             db.Insert(expectedUpdatedMissionAgent);
-            Response<List<MissionAgent>> actual = db.GetByMission(1);
+            Response<List<MissionAgent>> actual = db.GetByAgent(1);
 
             Assert.IsTrue(actual.Success);
             Assert.AreEqual(expected, actual.Data);
