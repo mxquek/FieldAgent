@@ -1,11 +1,6 @@
 ﻿using FieldAgent.Core;
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -19,10 +14,19 @@ namespace FieldAgent.DAL.Repositories
         public Response<SecurityClearance> Get(int securityClearanceId)
         {
             Response<SecurityClearance> result = new Response<SecurityClearance>();
-            using (var db = DbFac.GetDbContext())
+
+            try
             {
-                result.Data = db.SecurityClearances.Find(securityClearanceId);
-                result.Success = true;
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.SecurityClearances.Find(securityClearanceId);
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             if (result.Data == null)
             {
@@ -35,15 +39,24 @@ namespace FieldAgent.DAL.Repositories
         public Response<List<SecurityClearance>> GetAll()
         {
             Response<List<SecurityClearance>> result = new Response<List<SecurityClearance>>();
-            using (var db = DbFac.GetDbContext())
+
+            try
             {
-                result.Data = db.SecurityClearances.ToList();
-                result.Success = true;
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.SecurityClearances.ToList();
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             if (result.Data == null)
             {
                 result.Success = false;
-                result.Message = $"Could not retireve all Security Clearances";
+                result.Message = $"There are no Security Clearances";
             }
             return result;
         }

@@ -44,15 +44,6 @@ namespace FieldAgent.DAL
                 .HasKey(aa => new {aa.AgencyId, aa.AgentId});
             builder.Entity<MissionAgent>()
                 .HasKey(ma => new { ma.MissionId, ma.AgentId });
-            //builder.Entity<Mission>()
-            //    .HasMany<Agent>(m => m.Agents)
-            //    .WithMany(a => a.Missions)
-            //    .Map(ma =>
-            //    {
-            //        ma.MapLeftKey("MissionId");
-            //        ma.MapRightKay("AgentId");
-            //        ma.ToTable("MissionAgent");
-            //    });
         }
     }
 }

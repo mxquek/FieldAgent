@@ -1,11 +1,6 @@
 ﻿using FieldAgent.Core;
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -15,7 +10,6 @@ namespace FieldAgent.DAL.Repositories
         public LocationRepository LocationRepository { get; set; }
         public MissionRepository MissionRepository { get; set; }
 
-
         public AgencyRepository(DbFactory dbfac, LocationRepository locationRepo, MissionRepository missionRepo)
         {
             DbFac = dbfac;
@@ -23,7 +17,96 @@ namespace FieldAgent.DAL.Repositories
             MissionRepository = missionRepo;
         }
 
+        public Response<Agency> Get(int agencyId)
+        {
+            Response<Agency> result = new Response<Agency>();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.Agencies.Find(agencyId);
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            if (result.Data == null)
+            {
+                result.Success = false;
+                result.Message = $"Agency #{agencyId} not found";
+            }
+            return result;
+        }
+        public Response<List<Agency>> GetAll()
+        {
+            Response<List<Agency>> result = new Response<List<Agency>>();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.Agencies.ToList();
+                    result.Success = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            if (result.Data == null)
+            {
+                result.Success = false;
+                result.Message = $"Could not retireve all agencies";
+            }
+            return result;
+        }
 
+        public Response<Agency> Insert(Agency agency)
+        {
+            Response<Agency> result = new Response<Agency>();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.Agencies.Add(agency);
+                    db.SaveChanges();
+
+                    result.Data = agency;
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+        public Response Update(Agency agency)
+        {
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.Agencies.Update(agency);
+                    db.SaveChanges();
+
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
         public Response Delete(int agencyId)
         {
             Response result = new Response();
@@ -54,89 +137,6 @@ namespace FieldAgent.DAL.Repositories
                     db.SaveChanges();
 
                     result.Success = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public Response<Agency> Get(int agencyId)
-        {
-            Response<Agency> result = new Response<Agency>();
-            try
-            {
-                using (var db = DbFac.GetDbContext())
-                {
-                    result.Data = db.Agencies.Find(agencyId);
-                    result.Success = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-            if (result.Data == null)
-            {
-                result.Success = false;
-                result.Message = $"Agency #{agencyId} not found";
-            }
-            return result;
-        }
-
-        public Response<List<Agency>> GetAll()
-        {
-            Response<List<Agency>> result = new Response<List<Agency>>();
-            using (var db = DbFac.GetDbContext())
-            {
-                result.Data = db.Agencies.ToList();
-                result.Success = true;
-            }
-            if (result.Data == null)
-            {
-                result.Success = false;
-                result.Message = $"Could not retireve all agencies";
-            }
-            return result;
-        }
-
-        public Response<Agency> Insert(Agency agency)
-        {
-            Response<Agency> result = new Response<Agency>();
-            try
-            {
-                using (var db = DbFac.GetDbContext())
-                {
-                    db.Agencies.Add(agency);
-                    result.Data = agency;
-                    result.Success = true;
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-
-            return result;
-        }
-
-        public Response Update(Agency agency)
-        {
-            Response result = new Response();
-            try
-            {
-                using (var db = DbFac.GetDbContext())
-                {
-                    db.Agencies.Update(agency);
-                    result.Success = true;
-                    db.SaveChanges();
                 }
             }
             catch (Exception ex)

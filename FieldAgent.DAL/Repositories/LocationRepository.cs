@@ -1,11 +1,6 @@
 ﻿using FieldAgent.Core;
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -16,33 +11,22 @@ namespace FieldAgent.DAL.Repositories
         {
             DbFac = dbfac;
         }
-        public Response Delete(int locationId)
+
+        public Response<Location> Get(int locationId)
         {
-            Response result = new Response();
+            Response<Location> result = new Response<Location> ();
             try
             {
                 using (var db = DbFac.GetDbContext())
                 {
-                    db.Locations.Remove(db.Locations.Find(locationId));
+                    result.Data = db.Locations.Find(locationId);
                     result.Success = true;
-                    db.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
                 result.Success = false;
                 result.Message = ex.Message;
-            }
-            return result;
-        }
-
-        public Response<Location> Get(int locationId)
-        {
-            Response<Location> result = new Response<Location> ();
-            using (var db = DbFac.GetDbContext())
-            {
-                result.Data = db.Locations.Find(locationId);
-                result.Success = true;
             }
             if (result.Data == null)
             {
@@ -51,7 +35,6 @@ namespace FieldAgent.DAL.Repositories
             }
             return result;
         }
-
         public Response<List<Location>> GetByAgency(int agencyId)
         {
             Response<List<Location>> result = new Response<List<Location>>();
@@ -100,7 +83,6 @@ namespace FieldAgent.DAL.Repositories
 
             return result;
         }
-
         public Response Update(Location location)
         {
             Response result = new Response();
@@ -119,6 +101,25 @@ namespace FieldAgent.DAL.Repositories
                 result.Message = ex.Message;
             }
 
+            return result;
+        }
+        public Response Delete(int locationId)
+        {
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.Locations.Remove(db.Locations.Find(locationId));
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
             return result;
         }
     }

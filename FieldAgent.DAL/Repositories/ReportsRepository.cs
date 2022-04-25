@@ -3,12 +3,7 @@ using FieldAgent.Core.DTOs;
 using FieldAgent.Core.Interfaces.DAL;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -29,28 +24,37 @@ namespace FieldAgent.DAL.Repositories
         {
             Response<List<ClearanceAuditListItem>> result = new Response<List<ClearanceAuditListItem>>();
             result.Data = new List<ClearanceAuditListItem>();
-            using(var connection = new SqlConnection(_ConnectionString))
+            try
             {
-                var command = new SqlCommand("AuditClearance", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@SecurityClearanceId", securityClearanceId);
-                command.Parameters.AddWithValue("@AgencyId", agencyId);
-
-                connection.Open();
-                using (var reader = command.ExecuteReader())
+                using (var connection = new SqlConnection(_ConnectionString))
                 {
-                    while (reader.Read())
+                    var command = new SqlCommand("AuditClearance", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@SecurityClearanceId", securityClearanceId);
+                    command.Parameters.AddWithValue("@AgencyId", agencyId);
+
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        ClearanceAuditListItem item = new ClearanceAuditListItem();
-                        item.BadgeId = (Guid)reader["BadgeId"];
-                        item.NameLastFirst = reader["NameLastFirst"].ToString();
-                        item.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                        item.ActivationDate = (DateTime)reader["ActivationDate"];
-                        item.DeactivationDate = (DateTime)reader["DeactivationDate"];
-                        result.Data.Add(item);
+                        while (reader.Read())
+                        {
+                            ClearanceAuditListItem item = new ClearanceAuditListItem();
+                            item.BadgeId = (Guid)reader["BadgeId"];
+                            item.NameLastFirst = reader["NameLastFirst"].ToString();
+                            item.DateOfBirth = (DateTime)reader["DateOfBirth"];
+                            item.ActivationDate = (DateTime)reader["ActivationDate"];
+                            item.DeactivationDate = (DateTime)reader["DeactivationDate"];
+                            result.Data.Add(item);
+                        }
+                        result.Success = true;
                     }
-                    result.Success = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }
@@ -59,28 +63,36 @@ namespace FieldAgent.DAL.Repositories
         {
             Response<List<PensionListItem>> result = new Response<List<PensionListItem>>();
             result.Data = new List<PensionListItem>();
-            using (var connection = new SqlConnection(_ConnectionString))
+            try
             {
-                var command = new SqlCommand("PensionList", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@AgencyId", agencyId);
-
-                connection.Open();
-
-                using (var reader = command.ExecuteReader())
+                using (var connection = new SqlConnection(_ConnectionString))
                 {
-                    while (reader.Read())
+                    var command = new SqlCommand("PensionList", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@AgencyId", agencyId);
+
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        PensionListItem item = new PensionListItem();
-                        item.AgencyName = reader["ShortName"].ToString();
-                        item.BadgeId = (Guid)reader["BadgeId"];
-                        item.NameLastFirst = reader["NameLastFirst"].ToString();
-                        item.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                        item.DeactivationDate = (DateTime)reader["DeactivationDate"];
-                        result.Data.Add(item);
+                        while (reader.Read())
+                        {
+                            PensionListItem item = new PensionListItem();
+                            item.AgencyName = reader["ShortName"].ToString();
+                            item.BadgeId = (Guid)reader["BadgeId"];
+                            item.NameLastFirst = reader["NameLastFirst"].ToString();
+                            item.DateOfBirth = (DateTime)reader["DateOfBirth"];
+                            item.DeactivationDate = (DateTime)reader["DeactivationDate"];
+                            result.Data.Add(item);
+                        }
+                        result.Success = true;
                     }
-                    result.Success = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }
@@ -89,26 +101,35 @@ namespace FieldAgent.DAL.Repositories
         {
             Response<List<TopAgentListItem>> result = new Response<List<TopAgentListItem>>();
             result.Data = new List<TopAgentListItem>();
-            using (var connection = new SqlConnection(_ConnectionString))
+
+            try
             {
-                var command = new SqlCommand("TopAgents", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                connection.Open();
-
-                using(var reader = command.ExecuteReader())
+                using (var connection = new SqlConnection(_ConnectionString))
                 {
-                    while (reader.Read())
-                    {
-                        TopAgentListItem item = new TopAgentListItem();
-                        item.NameLastFirst = reader["NameLastFirst"].ToString();
-                        item.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                        item.CompletedMissionCount = (int)reader["NumberOfMissions"];
+                    var command = new SqlCommand("TopAgents", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                        result.Data.Add(item);
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TopAgentListItem item = new TopAgentListItem();
+                            item.NameLastFirst = reader["NameLastFirst"].ToString();
+                            item.DateOfBirth = (DateTime)reader["DateOfBirth"];
+                            item.CompletedMissionCount = (int)reader["NumberOfMissions"];
+
+                            result.Data.Add(item);
+                        }
+                        result.Success = true;
                     }
-                    result.Success = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }

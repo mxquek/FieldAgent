@@ -1,11 +1,6 @@
 ﻿using FieldAgent.Core;
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -39,7 +34,6 @@ namespace FieldAgent.DAL.Repositories
 
             return result;
         }
-
         public Response Update(Alias alias)
         {
             Response result = new Response();
@@ -60,7 +54,6 @@ namespace FieldAgent.DAL.Repositories
            
             return result;
         }
-
         public Response Delete(int aliasId)
         {
             Response result = new Response();
@@ -96,8 +89,6 @@ namespace FieldAgent.DAL.Repositories
             }
             return result;
         }
-        
-
         public Response<List<Alias>> GetByAgent(int agentId)
         {
             Response<List<Alias>> result = new Response<List<Alias>>();

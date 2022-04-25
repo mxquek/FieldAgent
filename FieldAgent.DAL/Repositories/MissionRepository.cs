@@ -2,11 +2,6 @@
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -39,7 +34,6 @@ namespace FieldAgent.DAL.Repositories
 
             return result;
         }
-
         public Response Update(Mission mission)
         {
             Response result = new Response();
@@ -60,7 +54,6 @@ namespace FieldAgent.DAL.Repositories
 
             return result;
         }
-
         public Response Delete(int missionId)
         {
             Response result = new Response();
@@ -91,10 +84,18 @@ namespace FieldAgent.DAL.Repositories
         public Response<Mission> Get(int missionId)
         {
             Response<Mission> result = new Response<Mission>();
-            using (var db = DbFac.GetDbContext())
+            try
             {
-                result.Data = db.Missions.Find(missionId);
-                result.Success = true;
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.Missions.Find(missionId);
+                    result.Success = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             if (result.Data == null)
             {
@@ -103,7 +104,6 @@ namespace FieldAgent.DAL.Repositories
             }
             return result;
         }
-
         public Response<List<Mission>> GetByAgency(int agencyId)
         {
             Response<List<Mission>> result = new Response<List<Mission>>();
@@ -131,7 +131,6 @@ namespace FieldAgent.DAL.Repositories
 
             return result;
         }
-
         public Response<List<Mission>> GetByAgent(int agentId)
         {
             Response<List<Mission>> result = new Response<List<Mission>>();

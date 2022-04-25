@@ -1,11 +1,6 @@
 ﻿using FieldAgent.Core;
 using FieldAgent.Core.Entities;
 using FieldAgent.Core.Interfaces.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.DAL.Repositories
 {
@@ -15,26 +10,6 @@ namespace FieldAgent.DAL.Repositories
         public AgencyAgentRepository(DbFactory dbfac)
         {
             DbFac = dbfac;
-        }
-
-        public Response Delete(int agencyId, int agentId)
-        {
-            Response result = new Response();
-            try
-            {
-                using (var db = DbFac.GetDbContext())
-                {
-                    db.AgencyAgents.Remove(db.AgencyAgents.Find(agencyId, agentId));
-                    result.Success = true;
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Success = false;
-                result.Message = ex.Message;
-            }
-            return result;
         }
 
         public Response<AgencyAgent> Get(int agencyId, int agentId)
@@ -61,7 +36,6 @@ namespace FieldAgent.DAL.Repositories
             }
             return result;
         }
-
         public Response<List<AgencyAgent>> GetByAgency(int agencyId)
         {
             Response<List<AgencyAgent>> result = new Response<List<AgencyAgent>>();
@@ -87,7 +61,6 @@ namespace FieldAgent.DAL.Repositories
             }
             return result;
         }
-
         public Response<List<AgencyAgent>> GetByAgent(int agentId)
         {
             Response<List<AgencyAgent>> result = new Response<List<AgencyAgent>>();
@@ -136,7 +109,6 @@ namespace FieldAgent.DAL.Repositories
 
             return result;
         }
-
         public Response Update(AgencyAgent agencyAgent)
         {
             Response result = new Response();
@@ -145,6 +117,25 @@ namespace FieldAgent.DAL.Repositories
                 using (var db = DbFac.GetDbContext())
                 {
                     db.AgencyAgents.Update(agencyAgent);
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+        public Response Delete(int agencyId, int agentId)
+        {
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.AgencyAgents.Remove(db.AgencyAgents.Find(agencyId, agentId));
                     result.Success = true;
                     db.SaveChanges();
                 }
