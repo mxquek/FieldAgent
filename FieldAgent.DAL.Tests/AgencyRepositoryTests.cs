@@ -26,7 +26,6 @@ namespace FieldAgent.DAL.Tests
             ShortName = "Gibbins",
             LongName = "Browsebug"
         };
-
         Agency expectedUpdatedAgency = new Agency
         {
             AgencyId = 1,
@@ -45,7 +44,8 @@ namespace FieldAgent.DAL.Tests
             ConfigProvider cp = new ConfigProvider();
             dbf = new DbFactory(cp.Config, FactoryMode.TEST);
             locationRepository = new LocationRepository(dbf);
-            db = new AgencyRepository(dbf,locationRepository,missionRepository);
+            missionRepository = new MissionRepository(dbf);
+            db = new AgencyRepository(dbf, locationRepository, missionRepository);
             dbf.GetDbContext().Database.ExecuteSqlRaw("SetKnownGoodState");
         }
 

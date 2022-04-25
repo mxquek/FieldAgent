@@ -14,7 +14,7 @@ namespace FieldAgent.DAL.Repositories
         public DbFactory DbFac { get; set; }
         public LocationRepository LocationRepository { get; set; }
         public MissionRepository MissionRepository { get; set; }
-       
+
 
         public AgencyRepository(DbFactory dbfac, LocationRepository locationRepo, MissionRepository missionRepo)
         {
@@ -31,21 +31,29 @@ namespace FieldAgent.DAL.Repositories
             {
                 using (var db = DbFac.GetDbContext())
                 {
-                    Response<List<Location>> locations = LocationRepository.GetByAgency(agencyId);
+                    var locations = LocationRepository.GetByAgency(agencyId);
                     foreach (Location location in locations.Data)
                     {
-                        db.Locations.Remove(location);
+                        LocationRepository.Delete(location.LocationId);
                     }
 
-                    Response<List<Mission>> missions = MissionRepository.GetByAgency(agencyId);
+                    var agencyAgents = db.AgencyAgents
+                                        .Where(aa => aa.AgencyId == agencyId);
+                    foreach (var agencyAgent in agencyAgents)
+                    {
+                        db.AgencyAgents.Remove(agencyAgent);
+                    }
+
+                    var missions = MissionRepository.GetByAgency(agencyId);
                     foreach (Mission mission in missions.Data)
                     {
-                        db.Missions.Remove(mission);
+                        MissionRepository.Delete(mission.MissionId);
                     }
 
                     db.Agencies.Remove(db.Agencies.Find(agencyId));
-                    result.Success = true;
                     db.SaveChanges();
+
+                    result.Success = true;
                 }
             }
             catch (Exception ex)

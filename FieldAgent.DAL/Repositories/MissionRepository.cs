@@ -107,6 +107,7 @@ namespace FieldAgent.DAL.Repositories
         public Response<List<Mission>> GetByAgency(int agencyId)
         {
             Response<List<Mission>> result = new Response<List<Mission>>();
+            result.Data = new List<Mission>();
             try
             {
                 using (var db = DbFac.GetDbContext())
