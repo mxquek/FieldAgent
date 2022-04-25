@@ -29,6 +29,31 @@ namespace FieldAgent.DAL.Tests
             AgencyId = 1
         };
 
+        public static Mission expectedUpdatedMission = new Mission
+        {
+            MissionId = 1,
+            CodeName = "UpdateJordanna",
+            StartDate = new DateTime(2019, 12, 13),
+            ProjectedEndDate = new DateTime(2015, 3, 4),
+            ActualEndDate = new DateTime(2015, 9, 22),
+            OperationalCost = 4612.88M,
+            Notes = null,
+
+            AgencyId = 3
+        };
+
+        public static Mission expectedNewMission = new Mission
+        {
+            CodeName = "NewMission",
+            StartDate = new DateTime(2020, 12, 13),
+            ProjectedEndDate = new DateTime(2021, 3, 4),
+            ActualEndDate = new DateTime(2021, 9, 22),
+            OperationalCost = 3612.88M,
+            Notes = null,
+
+            AgencyId = 2
+        };
+
         [SetUp]
         public void Setup()
         {
@@ -57,6 +82,43 @@ namespace FieldAgent.DAL.Tests
 
             Assert.IsTrue(actual.Success);
             Assert.False(db.Get(1).Success);
+        }
+        [Test]
+        public void Insert_GivenMission_InsertMission()
+        {
+            Response<Mission> actual = db.Insert(expectedNewMission);
+
+            Assert.True(actual.Success);
+            Assert.AreEqual(expectedNewMission, actual.Data);
+        }
+
+        [Test]
+        public void Update_GivenMission_UpdateMission()
+        {
+            Response result = db.Update(expectedUpdatedMission);
+            Assert.True(result.Success);
+
+            Mission actual = db.Get(1).Data;
+            Assert.AreEqual(expectedUpdatedMission, actual);
+        }
+
+        [Test]
+        public void Get_GivenAgentId_ReturnAgent()
+        {
+            Response<Mission> result = db.Get(1);
+            Assert.True(result.Success);
+            Assert.AreEqual(result.Data, expectedMission);
+        }
+
+        [Test]
+        public void GetByAgent_GivenAgentId_ReturnMissions()
+        {
+            List<Mission> expected = new List<Mission>();
+            expected.Add(expectedMission);
+
+            Response<List<Mission>> result = db.GetByAgent(1);
+            Assert.True(result.Success);
+            Assert.AreEqual(result.Data, expected);
         }
     }
 }

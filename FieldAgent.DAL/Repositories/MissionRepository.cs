@@ -20,27 +20,13 @@ namespace FieldAgent.DAL.Repositories
 
         public Response<Mission> Insert(Mission mission)
         {
-            throw new NotImplementedException();
-        }
-
-        public Response Update(Mission mission)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Response Delete(int missionId)
-        {
-            Response result = new Response();
-/*            try
+            Response<Mission> result = new Response<Mission>();
+            try
             {
                 using (var db = DbFac.GetDbContext())
                 {
-                    var missions = db.Missions.Include(m => m.Agents).Where(m => m.MissionId == missionId);
-                    foreach (Mission mission in missions)
-                    {
-                        db.Missions.Remove(mission);
-                    }
-
+                    db.Missions.Add(mission);
+                    result.Data = mission;
                     result.Success = true;
                     db.SaveChanges();
                 }
@@ -49,13 +35,73 @@ namespace FieldAgent.DAL.Repositories
             {
                 result.Success = false;
                 result.Message = ex.Message;
-            }*/
+            }
+
+            return result;
+        }
+
+        public Response Update(Mission mission)
+        {
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    db.Missions.Update(mission);
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return result;
+        }
+
+        public Response Delete(int missionId)
+        {
+            Response result = new Response();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    var missionAgents = db.MissionAgents
+                                            .Where(ma => ma.MissionId == missionId);
+                    foreach (var missionAgent in missionAgents)
+                    {
+                        db.MissionAgents.Remove(missionAgent);
+                    }
+
+                    db.Missions.Remove(db.Missions.Find(missionId));
+                    result.Success = true;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
             return result;
         }
 
         public Response<Mission> Get(int missionId)
         {
-            throw new NotImplementedException();
+            Response<Mission> result = new Response<Mission>();
+            using (var db = DbFac.GetDbContext())
+            {
+                result.Data = db.Missions.Find(missionId);
+                result.Success = true;
+            }
+            if (result.Data == null)
+            {
+                result.Success = false;
+                result.Message = $"Mission #{missionId} not found";
+            }
+            return result;
         }
 
         public Response<List<Mission>> GetByAgency(int agencyId)
@@ -87,7 +133,33 @@ namespace FieldAgent.DAL.Repositories
 
         public Response<List<Mission>> GetByAgent(int agentId)
         {
-            throw new NotImplementedException();
+            Response<List<Mission>> result = new Response<List<Mission>>();
+            try
+            {
+                using (var db = DbFac.GetDbContext())
+                {
+                    result.Data = db.MissionAgents
+                                        .Include(ma => ma.Mission)
+                                        .Where(ma => ma.AgentId == agentId)
+                                        .Select(ma => ma.Mission)
+                                        .ToList();
+
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            if (result.Data == null)
+            {
+                result.Success = false;
+                result.Message = $"No missions found for Agent #{agentId}";
+            }
+
+            return result;
         }
     }
 }
