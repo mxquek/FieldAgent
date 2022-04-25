@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FieldAgent.Core.Entities
@@ -21,6 +16,7 @@ namespace FieldAgent.Core.Entities
         public int AgentId { get; set; }
         public Agent Agent { get; set; }
 
+        //Overrides
         public override bool Equals(object obj)
         {
             return obj is Alias alias &&
@@ -30,7 +26,6 @@ namespace FieldAgent.Core.Entities
                 Persona == alias.Persona &&
                 AgentId == alias.AgentId;
         }
-
         public override int GetHashCode()
         {
             return HashCode.Combine(AliasId, AliasName, InterpolId, Persona, AgentId);

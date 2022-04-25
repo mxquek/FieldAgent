@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FieldAgent.Core.Entities
 {
     [Table("MissionAgent")]
     public class MissionAgent
     {
+        //Primary Keys
         public int MissionId { get; set; }
         public int AgentId  { get; set; }
 
         public Mission Mission { get; set; }
         public Agent Agent { get; set; }
 
+        //Overrides
         public override bool Equals(object obj)
         {
             return obj is MissionAgent missionAgent &&

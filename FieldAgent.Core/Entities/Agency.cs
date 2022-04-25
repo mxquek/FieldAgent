@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldAgent.Core.Entities
 {
@@ -21,6 +16,7 @@ namespace FieldAgent.Core.Entities
         public List<Location> Locations { get; set; }
         public List<Mission> Missions { get; set; }
 
+        //Overrides
         public override bool Equals(object obj)
         {
             return obj is Agency agency &&
